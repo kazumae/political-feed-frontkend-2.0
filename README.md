@@ -1,36 +1,230 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 政治家フィード - フロントエンド
 
-## Getting Started
+政治家フィードは、政治家の発言をキュレーションし、有権者に分かりやすい形で提供するウェブサービスです。このリポジトリはフロントエンド部分を管理しています。
 
-First, run the development server:
+## 技術要件
+
+### 使用技術
+
+- **フレームワーク**: [Next.js](https://nextjs.org/) 15.2.3
+- **言語**: [TypeScript](https://www.typescriptlang.org/)
+- **UIライブラリ**: [Tailwind CSS](https://tailwindcss.com/)
+- **状態管理**: React Context API（将来的にRedux Toolkitまたは React Queryに移行予定）
+- **フォント**: [Geist](https://vercel.com/font)
+
+### 必要環境
+
+- Node.js 18.0.0以上
+- npm 8.0.0以上（またはyarn、pnpm、bun）
+
+## 開発環境のセットアップ
+
+### 1. 依存関係のインストール
+
+```bash
+cd 01_frontend
+npm install
+# または
+yarn install
+```
+
+### 2. 開発サーバーの起動
 
 ```bash
 npm run dev
-# or
+# または
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+開発サーバーが起動したら、ブラウザで [http://localhost:3000](http://localhost:3000) にアクセスして結果を確認できます。
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. ビルド
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build
+# または
+yarn build
+```
 
-## Learn More
+### 4. 本番モードでの起動
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run start
+# または
+yarn start
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## プロジェクト構成
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+01_frontend/
+├── public/           # 静的ファイル
+├── src/              # ソースコード
+│   ├── app/          # Next.js App Router
+│   │   ├── layout.tsx    # 共通レイアウト
+│   │   ├── page.tsx      # ホームページ
+│   │   ├── politicians/  # 政治家関連ページ
+│   │   ├── parties/      # 政党関連ページ
+│   │   ├── topics/       # トピック関連ページ
+│   │   └── statements/   # 発言関連ページ
+│   ├── components/   # 共通コンポーネント
+│   │   ├── common/       # 共通UI要素
+│   │   ├── features/     # 機能別コンポーネント
+│   │   └── ui/           # 基本UI要素
+│   ├── lib/          # ユーティリティ関数
+│   │   └── api/          # API関連
+│   └── config/       # 設定ファイル
+└── documents/        # ドキュメント
+```
 
-## Deploy on Vercel
+## 主要画面一覧
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **ホーム画面**: `/` - 政治家の発言フィード
+- **政治家一覧**: `/politicians` - 政治家の一覧と検索
+- **政治家詳細**: `/politicians/[id]` - 個別政治家の詳細情報
+- **政党一覧**: `/parties` - 政党の一覧と検索
+- **政党詳細**: `/parties/[id]` - 個別政党の詳細情報
+- **トピック一覧**: `/topics` - 政策トピックの一覧と検索
+- **トピック詳細**: `/topics/[id]` - 個別トピックの詳細情報
+- **発言詳細**: `/statements/[id]` - 個別発言の詳細情報
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 開発ワークフロー
+
+### 1. 新機能・修正の実装
+
+1. 最新のコードを取得
+2. 機能ブランチを作成
+3. 実装・テスト
+4. コミット
+5. プルリクエスト作成
+
+### 2. コーディング規約
+
+- [ESLint](https://eslint.org/)と[Prettier](https://prettier.io/)を使用
+- コンポーネントは機能ごとにディレクトリを分ける
+- 型定義はしっかりと行う
+- コメントは日本語で記述
+
+### 3. コミットメッセージ規約
+
+```
+[種別] 変更内容の要約
+
+変更内容の詳細
+```
+
+種別:
+- `feat`: 新機能
+- `fix`: バグ修正
+- `docs`: ドキュメントのみの変更
+- `style`: コードの意味に影響しない変更（空白、フォーマット、セミコロンの欠落など）
+- `refactor`: バグ修正や機能追加ではないコード変更
+- `test`: テストの追加・修正
+- `chore`: ビルドプロセスやツールの変更
+
+## タスク報告書の作成方法
+
+タスクを完了したら、以下の手順で報告書を作成してください。
+
+### 1. 報告書の作成場所
+
+報告書は `documents/tasks/` ディレクトリに作成します。
+ファイル名は `YYYYMMDD_タスク名.md` の形式にしてください。
+
+例: `20250322_フロントエンド静的画面実装.md`
+
+### 2. 報告書のテンプレート
+
+```markdown
+# タスク名
+
+## 1. タスクの詳細
+
+### タスク名
+簡潔なタスク名
+
+### 目的
+このタスクの目的を記述
+
+### 関連ドキュメント
+関連するドキュメントへのリンク
+
+### 優先度
+高/中/低
+
+## 2. 対応内容
+
+以下の作業を実施しました：
+
+1. **作業項目1**
+   - 詳細1
+   - 詳細2
+
+2. **作業項目2**
+   - 詳細1
+   - 詳細2
+
+## 3. 残課題
+
+以下の課題が残っています：
+
+1. **残課題1**
+   - 詳細
+
+2. **残課題2**
+   - 詳細
+
+## 4. 使用方法
+
+### 機能の使用方法
+
+```bash
+# コマンド例
+```
+
+### 注意事項
+
+- 注意点1
+- 注意点2
+```
+
+### 3. 報告書作成のポイント
+
+- **具体的に記述**: 何をどのように実装したかを具体的に記述
+- **問題点と解決策**: 直面した問題とその解決策を記述
+- **残課題の明確化**: 今後対応が必要な課題を明確に記述
+- **使用方法の説明**: 実装した機能の使用方法を具体的に説明
+
+### 4. 報告書の提出
+
+1. 報告書をコミット
+2. プルリクエストに報告書へのリンクを記載
+3. レビュー依頼
+
+## トラブルシューティング
+
+### 開発サーバーが起動しない
+
+1. Node.jsのバージョンを確認
+2. 依存関係が正しくインストールされているか確認
+3. ポート3000が他のプロセスで使用されていないか確認
+
+### TypeScriptエラー
+
+1. 型定義が正しいか確認
+2. 必要なライブラリの型定義がインストールされているか確認
+3. `tsconfig.json`の設定を確認
+
+### APIとの連携エラー
+
+1. APIサーバーが起動しているか確認
+2. APIのエンドポイントが正しいか確認
+3. 認証情報が正しいか確認
+
+## 参考リソース
+
+- [Next.js ドキュメント](https://nextjs.org/docs)
+- [TypeScript ドキュメント](https://www.typescriptlang.org/docs/)
+- [Tailwind CSS ドキュメント](https://tailwindcss.com/docs)
+- [プロジェクト要件定義書](../documents/01_要件定義.md)
+- [画面一覧](../documents/05_画面一覧.md)
