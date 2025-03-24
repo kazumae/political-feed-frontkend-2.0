@@ -49,7 +49,6 @@ class ApiClient {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const { Authorization, ...restHeaders } = this.options.headers || {};
       this.options.headers = restHeaders;
-      this.options.headers = restHeaders;
     }
   }
 

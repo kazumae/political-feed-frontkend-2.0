@@ -9,6 +9,17 @@ import {
 } from '../types/politician';
 
 /**
+ * 政治家一覧のレスポンス型
+ *
+ * 注: バックエンドのレスポンス形式に合わせて定義
+ * バックエンドは配列を返すが、フロントエンドでは以下の形式に変換する
+ */
+export interface PoliticiansResponse {
+  items: Politician[];
+  total: number;
+}
+
+/**
  * 政治家関連のhook
  * 政治家一覧の取得、詳細の取得、フォロー/アンフォローなどの機能を提供
  */
@@ -28,17 +39,26 @@ export const usePoliticians = () => {
     setError(null);
 
     try {
-      const politicians = await apiClient.get<Politician[]>(
+      // バックエンドから政治家一覧を取得
+      const response = await apiClient.get<Politician[]>(
         config.api.endpoints.politicians.list,
         params as Record<string, unknown>
       );
+      
+      // レスポンスをPoliticiansResponse形式に変換
+      const result: PoliticiansResponse = {
+        items: response || [],
+        total: response?.length || 0
+      };
+      
       setIsLoading(false);
-      return politicians;
+      return result;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : '政治家一覧の取得に失敗しました';
+      console.error('Error fetching politicians:', error);
       setError(errorMessage);
       setIsLoading(false);
-      return [];
+      return { items: [], total: 0 };
     }
   }, []);
 
