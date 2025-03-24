@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import { useApi } from '@/lib/api/context/ApiContext';
 
 // ナビゲーションアイテムの型定義
 interface NavItem {
@@ -244,11 +245,16 @@ function NavSection({
   );
 }
 
-// ログイン状態（モックデータ）
-const isLoggedIn = false;
-
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { auth } = useApi();
+  
+  // ログアウト処理
+  const handleLogout = async () => {
+    await auth.logout();
+    router.push('/');
+  };
 
   return (
     <div className="hidden md:flex md:flex-col md:w-64 md:fixed md:inset-y-0 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800">
@@ -264,12 +270,57 @@ export default function Sidebar() {
         <nav className="flex-1 px-2 py-4 space-y-6">
           <NavSection title="メインメニュー" items={mainNavItems} pathname={pathname} />
           
-          {isLoggedIn && (
+          {auth.isAuthenticated && (
             <NavSection title="フォロー中" items={followingNavItems} pathname={pathname} />
           )}
           
-          {isLoggedIn ? (
-            <NavSection title="アカウント" items={settingsNavItems} pathname={pathname} />
+          {auth.isAuthenticated ? (
+            <>
+              <NavSection title="アカウント" items={settingsNavItems} pathname={pathname} />
+              
+              {/* ログアウトボタン */}
+              <div className="px-3 py-2">
+                <button
+                  onClick={handleLogout}
+                  className="w-full flex items-center justify-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-2"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                    />
+                  </svg>
+                  ログアウト
+                </button>
+              </div>
+              
+              {/* ユーザー情報 */}
+              <div className="px-3 py-2 mt-auto">
+                <div className="flex items-center px-2 py-3 rounded-md bg-gray-100 dark:bg-gray-800">
+                  <div className="flex-shrink-0">
+                    <div className="h-8 w-8 rounded-full bg-blue-800 dark:bg-blue-700 flex items-center justify-center text-white">
+                      {auth.user?.username.charAt(0).toUpperCase() || 'U'}
+                    </div>
+                  </div>
+                  <div className="ml-3">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {auth.user?.username || 'ユーザー'}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
+                      {auth.user?.email || 'メールアドレス'}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </>
           ) : (
             <div className="px-3 py-2">
               <Link

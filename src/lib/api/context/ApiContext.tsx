@@ -4,12 +4,14 @@ import React, { createContext, useContext, ReactNode } from 'react';
 import { useAuth } from '../hooks/useAuth';
 import { usePoliticians } from '../hooks/usePoliticians';
 import { useStatements } from '../hooks/useStatements';
+import { useTopics } from '../hooks/useTopics';
 
 // APIコンテキストの型定義
 interface ApiContextType {
   auth: ReturnType<typeof useAuth>;
   politicians: ReturnType<typeof usePoliticians>;
   statements: ReturnType<typeof useStatements>;
+  topics: ReturnType<typeof useTopics>;
 }
 
 // APIコンテキストの作成
@@ -29,12 +31,14 @@ export const ApiProvider: React.FC<ApiProviderProps> = ({ children }) => {
   const auth = useAuth();
   const politicians = usePoliticians();
   const statements = useStatements();
+  const topics = useTopics();
 
   // コンテキスト値の作成
   const value: ApiContextType = {
     auth,
     politicians,
     statements,
+    topics,
   };
 
   return <ApiContext.Provider value={value}>{children}</ApiContext.Provider>;
